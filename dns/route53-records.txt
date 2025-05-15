@@ -1,0 +1,13 @@
+# Route 53 Private Hosted Zone Records for Internal DNS Resolution
+
+# Format: <Record Name>   <Record Type>   <Private IP>
+
+db01            A   10.0.2.x    # MySQL Instance
+mc01            A   10.0.3.x    # Memcached Instance
+rmq01           A   10.0.4.x    # RabbitMQ Instance
+
+# Notes:
+# - These records allow internal services to communicate using hostnames.
+# - All EC2 instances are in the same VPC and associated with the private hosted zone.
+# - Make sure DNS resolution and hostnames are enabled in VPC settings.
+

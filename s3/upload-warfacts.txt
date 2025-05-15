@@ -1,0 +1,75 @@
+Absolutely — here is the **fully formatted, copy-ready guide** right here in the conversation. You can just **copy and paste** it directly:
+
+---
+
+# 📦 Upload WAR File to S3 Bucket
+
+This guide explains how to upload the built WAR artifact (`vprofile-v2.war`) to an S3 bucket so that it can be fetched by the Tomcat EC2 instance.
+
+---
+
+### 🛠️ Step 1: Build the Application
+
+Run the following Maven command to build the WAR file and skip tests:
+
+```bash
+mvn clean install -DskipTests
+```
+
+✅ **Output Location**
+After the build, the WAR file will be located at:
+
+```
+target/vprofile-v2.war
+```
+
+---
+
+### ☁️ Step 2: Upload to S3
+
+Use the AWS CLI to upload the WAR file:
+
+```bash
+aws s3 cp target/vprofile-v2.war s3://<your-s3-bucket-name>/vprofile-v2.war
+```
+
+> Replace `<your-s3-bucket-name>` with your actual S3 bucket name.
+
+---
+
+### 🔐 Step 3: Ensure EC2 Access Permissions
+
+Make sure your EC2 instance has:
+
+* An **IAM Role** attached with `s3:GetObject` permission.
+* The correct **S3 bucket policy** (if needed) to allow access.
+
+---
+
+### 💡 Optional: Generate Pre-signed URL
+
+To create a temporary download link for the WAR file:
+
+```bash
+aws s3 presign s3://<your-s3-bucket-name>/vprofile-v2.war --expires-in 3600
+```
+
+---
+
+### 🧪 Example
+
+Upload WAR file:
+
+```bash
+aws s3 cp target/vprofile-v2.war s3://vprofile-artifacts-prod/vprofile-v2.war
+```
+
+Then in your EC2 user data script (e.g., `tomcat.sh`):
+
+```bash
+aws s3 cp s3://vprofile-artifacts-prod/vprofile-v2.war /usr/local/tomcat/webapps/
+```
+
+---
+
+
